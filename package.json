@@ -1,0 +1,46 @@
+{
+  "name": "tailwind-runtime-jit",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "default": "./dist/webpack.js"
+    },
+    "./loader": {
+      "types": "./dist/loader.d.ts",
+      "default": "./dist/loader.js"
+    }
+  },
+  "files": ["dist/*"],
+  "scripts": {
+    "build": "tsc || true",
+    "watch": "tsc --watch",
+    "prepack": "yarn build"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "modern-normalize": "^1.1.0",
+    "normalize.css": "^8.0.1",
+    "postcss": "^8.4.14",
+    "simple-functional-loader": "^1.2.1",
+    "tailwindcss": "^3.1.6",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0"
+  },
+  "dependencies": {
+    "memfs": "^3",
+    "node-polyfill-webpack-plugin": "^2.0.0",
+    "path-browserify": "^1",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "peerDependencies": {
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "webpack": "^5"
+  }
+}
