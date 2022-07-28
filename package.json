@@ -2,6 +2,14 @@
   "name": "tailwind-runtime-jit",
   "version": "0.1.0",
   "license": "MIT",
+  "homepage": "https://github.com/Tarik02/tailwind-runtime-jit#readme",
+  "bugs": {
+    "url": "https://github.com/Tarik02/tailwind-runtime-jit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tarik02/tailwind-runtime-jit.git"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
