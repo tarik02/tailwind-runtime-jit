@@ -1976,7 +1976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memfs@npm:^3.4.7":
+"memfs@npm:^3":
   version: 3.4.7
   resolution: "memfs@npm:3.4.7"
   dependencies:
@@ -3016,7 +3016,7 @@ __metadata:
   resolution: "tailwind-runtime-jit@workspace:."
   dependencies:
     cross-env: ^7.0.3
-    memfs: ^3.4.7
+    memfs: ^3
     modern-normalize: ^1.1.0
     node-polyfill-webpack-plugin: ^2.0.0
     normalize.css: ^8.0.1
