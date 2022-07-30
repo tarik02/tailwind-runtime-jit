@@ -1,7 +1,6 @@
 import { createLoader } from 'simple-functional-loader';
 import * as Path from 'path';
 import * as Webpack from 'webpack';
-// @ts-ignore
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 
 import { createRequire } from 'module';

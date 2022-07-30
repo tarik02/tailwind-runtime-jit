@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "memfs": "^3",
-    "node-polyfill-webpack-plugin": "^2.0.0",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "path-browserify": "^1",
     "simple-functional-loader": "^1.2.1",
     "webpack-node-externals": "^3.0.0"

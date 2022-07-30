@@ -2219,9 +2219,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-polyfill-webpack-plugin@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "node-polyfill-webpack-plugin@npm:2.0.0"
+"node-polyfill-webpack-plugin@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "node-polyfill-webpack-plugin@npm:2.0.1"
   dependencies:
     assert: ^2.0.0
     browserify-zlib: ^0.2.0
@@ -2250,7 +2250,7 @@ __metadata:
     vm-browserify: ^1.1.2
   peerDependencies:
     webpack: ">=5"
-  checksum: 51841c4467c147323cdf3d4dd33e9e40e312c04bf7283e66e046893822e9bd150ad7de14e5b8a76e4707ef78a170e0f6465d54c7054193de48c3a543f819192a
+  checksum: 0efb27ba224449d530d837bf7cd22f033ee5d0498e31898968896e2bb6844ffbfb26af976623268a052671f2b927df7561859faf5cbf3d646677ad0e914e1427
   languageName: node
   linkType: hard
 
@@ -3018,7 +3018,7 @@ __metadata:
     cross-env: ^7.0.3
     memfs: ^3
     modern-normalize: ^1.1.0
-    node-polyfill-webpack-plugin: ^2.0.0
+    node-polyfill-webpack-plugin: ^2.0.1
     normalize.css: ^8.0.1
     path-browserify: ^1
     postcss: ^8.4.14
