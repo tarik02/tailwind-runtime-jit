@@ -1,0 +1,16 @@
+name: Publish to NPM
+on:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        node-version: '18.x'
+        registry-url: 'https://registry.npmjs.org'
+    - run: yarn
+    - run: yarn npm publish
+      env:
+        NODE_AUTH_TOKN: ${{ secrets.NPM_TOKEN }}
