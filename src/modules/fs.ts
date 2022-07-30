@@ -1,3 +1,9 @@
 import { fs } from 'memfs';
 
-export = fs;
+export default fs;
+
+export const {
+  mkdirSync,
+  unlinkSync,
+  writeFileSync,
+} = fs;

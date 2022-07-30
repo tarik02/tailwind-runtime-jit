@@ -1,7 +1,7 @@
 import { Config } from 'tailwindcss';
 
-import { createCompiler } from './compiler';
-import { createClassesWatcher } from './watcher';
+import { createCompiler } from './compiler.js';
+import { createClassesWatcher } from './watcher.js';
 
 
 export const createRuntime = () => {

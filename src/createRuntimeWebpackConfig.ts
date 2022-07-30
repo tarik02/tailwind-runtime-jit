@@ -1,10 +1,9 @@
-import { createLoader } from 'simple-functional-loader';
-import * as Path from 'path';
-import * as Webpack from 'webpack';
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
-
-import { createRequire } from 'module';
-
+import { createRequire } from 'node:module';
+import * as Path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createLoader } from 'simple-functional-loader';
+import Webpack from 'webpack';
 
 const externals: Record<string, string> = {
   chokidar: 'self.chokidar',
@@ -18,19 +17,19 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
   const config: Webpack.Configuration = {
     context,
     entry: {
-      index: Path.resolve(__dirname, '../dist/index.js')
+      index: fileURLToPath(new URL('browser.js', import.meta.url)),
     },
     output: {
       filename: '[name].js',
       globalObject: 'self',
       library: {
         type: 'global',
-        name: 'TailwindRuntimeJit'
-      }
+        name: 'TailwindRuntimeJit',
+      },
     },
     resolve: {
       alias: {
-        fs: Path.resolve(__dirname, '../dist/modules/fs.js'),
+        fs: fileURLToPath(new URL('modules/fs.js', import.meta.url)),
       },
       fallback: {
         module: false,
@@ -41,7 +40,7 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
       rules: [
         {
           test: /\.css$/i,
-          type: 'asset/source'
+          type: 'asset/source',
         },
         {
           test: require.resolve('glob-parent'),

@@ -1,6 +1,6 @@
 import { Volume } from 'memfs';
-import * as Webpack from 'webpack';
-import { createRuntimeWebpackConfig } from './createRuntimeWebpackConfig';
+import Webpack from 'webpack';
+import { createRuntimeWebpackConfig } from './createRuntimeWebpackConfig.js';
 
 export async function pitch(this: Webpack.LoaderContext<{}>) {
   this.cacheable && this.cacheable(true);
@@ -26,6 +26,22 @@ export async function pitch(this: Webpack.LoaderContext<{}>) {
       }
     });
   });
+
+  for (const dependency of stats.compilation.fileDependencies) {
+    this.addDependency(dependency);
+  }
+
+  for (const dependency of stats.compilation.contextDependencies) {
+    this.addContextDependency(dependency);
+  }
+
+  for (const dependency of stats.compilation.buildDependencies) {
+    this.addBuildDependency(dependency);
+  }
+
+  for (const dependency of stats.compilation.missingDependencies) {
+    this.addMissingDependency(dependency);
+  }
 
   for (const error of stats.compilation.errors) {
     this.emitError(error);

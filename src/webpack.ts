@@ -1,10 +1,10 @@
-import * as Webpack from 'webpack';
+import Webpack from 'webpack';
 
 type Options = {
   loader?: boolean;
 };
 
-class TailwindRuntimeJitWebpack {
+export default class TailwindRuntimeJitWebpack {
   static loader = 'tailwind-runtime-jit/loader';
 
   constructor(public readonly options: Readonly<Options> = {}) {
@@ -26,5 +26,3 @@ class TailwindRuntimeJitWebpack {
     })).apply(compiler);
   }
 }
-
-export = TailwindRuntimeJitWebpack;

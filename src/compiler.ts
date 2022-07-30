@@ -1,12 +1,15 @@
 import * as FS from 'fs';
 import * as Path from 'path';
-import tailwindcss, { Config } from 'tailwindcss';
-import postcss from 'postcss';
+import { default as postcss } from 'postcss';
+import { Config, default as tailwindcss } from 'tailwindcss';
+
+// @ts-ignore
+import preflightCss from 'tailwindcss/lib/css/preflight.css';
 
 
 FS.mkdirSync('/css');
 // @ts-ignore
-FS.writeFileSync('/css/preflight.css', require('tailwindcss/lib/css/preflight.css'));
+FS.writeFileSync('/css/preflight.css', preflightCss);
 
 export const createCompiler = (config: Omit<Config, 'content'>) => {
   const virtualSourcePath = `/tmp/${Math.random().toString().slice(2)}.css`;
