@@ -14,7 +14,7 @@ const externals: Record<string, string> = {
 };
 
 export const createRuntimeWebpackConfig = async (context: string): Promise<Webpack.Configuration> => {
-  const require = createRequire(context);
+  const require = createRequire(context + '/');
 
   const config: Webpack.Configuration = {
     context,
