@@ -4,9 +4,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Use node
+      uses: actions/setup-node@v1
       with:
         node-version: '18.x'
-        registry-url: 'https://registry.npmjs.org'
-    - run: yarn
-    - run: yarn pack
+
+    - name: Install
+      run: yarn install --immutable
+      env:
+        CI: true
+
+    - name: Pack
+      run: yarn pack
