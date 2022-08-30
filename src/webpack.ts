@@ -2,6 +2,7 @@ import Webpack from 'webpack';
 
 type Options = {
   loader?: boolean;
+  esModule?: boolean;
 };
 
 export default class TailwindRuntimeJitWebpack {
@@ -15,6 +16,9 @@ export default class TailwindRuntimeJitWebpack {
       compiler.options.module.rules.unshift({
         test: /(^|[\\\/])tailwind\.config\.[^.\\/]+$/i,
         loader: TailwindRuntimeJitWebpack.loader,
+        options: {
+          esModule: this.options.esModule,
+        },
       });
     }
 

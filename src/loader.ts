@@ -2,8 +2,21 @@ import { Volume } from 'memfs';
 import Webpack from 'webpack';
 import { createRuntimeWebpackConfig } from './createRuntimeWebpackConfig.js';
 
-export async function pitch(this: Webpack.LoaderContext<{}>) {
+type Options = {
+  esModule?: boolean;
+};
+
+export async function pitch(this: Webpack.LoaderContext<Options>) {
   this.cacheable && this.cacheable(true);
+
+  const options = this.getOptions({
+    type: 'object',
+    properties: {
+      esModule: {
+        type: 'boolean',
+      },
+    },
+  });
 
   const config = await createRuntimeWebpackConfig(this.rootContext);
 
@@ -49,6 +62,18 @@ export async function pitch(this: Webpack.LoaderContext<{}>) {
 
   for (const error of stats.compilation.warnings) {
     this.emitWarning(error);
+  }
+
+  if (options.esModule) {
+    return `
+import * as config from ${JSON.stringify('!' + this.resourcePath)};
+${fs.readFileSync('/index.js')}
+var runtime = TailwindRuntimeJit.createRuntime();
+runtime.setConfig(config);
+import.meta.webpackHot.accept(${JSON.stringify('!' + this.resourcePath)}, function () {
+  runtime.setConfig(config);
+});
+`;
   }
 
   return `
