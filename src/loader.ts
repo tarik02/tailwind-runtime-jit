@@ -69,9 +69,9 @@ export async function pitch(this: Webpack.LoaderContext<Options>) {
 import * as config from ${JSON.stringify('!' + this.resourcePath)};
 ${fs.readFileSync('/index.js')}
 var runtime = TailwindRuntimeJit.createRuntime();
-runtime.setConfig(config);
+runtime.setConfig(config.default ? config.default : config);
 import.meta.webpackHot.accept(${JSON.stringify('!' + this.resourcePath)}, function () {
-  runtime.setConfig(config);
+  runtime.setConfig(config.default ? config.default : config);
 });
 `;
   }
