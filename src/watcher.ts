@@ -4,27 +4,64 @@ export const createClassesWatcher = (
 ): () => void => {
   const classNames = [...initialClassNames];
   const classNamesSet = new Set(classNames);
+  const usedElements = new WeakSet;
 
-  const collectNewClassNames = () => {
+  const collectElementClasses = (element: Element) => {
     let didAddClasses = false;
-    for (const element of document.querySelectorAll('[class]')) {
-      for (const className of element.classList) {
-        if (classNamesSet.has(className)) {
-          continue;
-        }
-        didAddClasses = true;
-        classNames.push(className);
-        classNamesSet.add(className);
+    for (const className of element.classList) {
+      if (classNamesSet.has(className)) {
+        continue;
       }
+      didAddClasses = true;
+      classNames.push(className);
+      classNamesSet.add(className);
     }
     return didAddClasses;
   };
 
-  collectNewClassNames();
-  Promise.resolve().then(() => callback(classNames));
+  const collectSubtreeClasses = (root: Element): boolean => {
+    if (usedElements.has(root)) {
+      return false;
+    }
+    usedElements.add(root);
 
-  const observer = new MutationObserver(async () => {
-    if (collectNewClassNames()) {
+    let didAddClasses = false;
+    if (collectElementClasses(root)) {
+      didAddClasses = true;
+    }
+
+    for (const child of root.children) {
+      if (collectSubtreeClasses(child)) {
+        didAddClasses = true;
+      }
+    }
+
+    return didAddClasses;
+  };
+
+  const observer = new MutationObserver(entries => {
+    let didAddClasses = false;
+    for (const entry of entries) {
+      switch (entry.type) {
+        case 'attributes':
+          if (collectElementClasses(entry.target as Element)) {
+            didAddClasses = true;
+          }
+          break;
+
+        case 'childList':
+          for (const node of entry.addedNodes) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              if (collectSubtreeClasses(node as Element)) {
+                didAddClasses = true;
+              }
+            }
+          }
+          break;
+      }
+    }
+
+    if (didAddClasses) {
       callback(classNames);
     }
   });
@@ -34,6 +71,14 @@ export const createClassesWatcher = (
     childList: true,
     subtree: true
   });
+
+  collectSubtreeClasses(document.documentElement);
+
+  try {
+    callback(classNames);
+  } catch (e) {
+    console.error(e);
+  }
 
   return () => {
     observer.disconnect();
