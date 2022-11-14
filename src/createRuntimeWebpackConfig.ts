@@ -62,7 +62,11 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
           test: require.resolve('fast-glob'),
           use: [
             createLoader(function (source: string) {
-              return `module.exports = { sync: (patterns) => [].concat(patterns), generateTasks: files => [{ positive: files, negative: [] }] }`
+              return `module.exports = {
+                sync: (patterns) => [].concat(patterns),
+                generateTasks: files => [{ positive: files, negative: [] }],
+                escapePath: path => path,
+              }`
             }),
           ],
         },
