@@ -1,6 +1,5 @@
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 import { createRequire } from 'node:module';
-import * as Path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createLoader } from 'simple-functional-loader';
 import Webpack from 'webpack';
@@ -30,6 +29,7 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
     resolve: {
       alias: {
         fs: fileURLToPath(new URL('modules/fs.js', import.meta.url)),
+        '@tailwindcss/oxide': fileURLToPath(new URL('modules/tailwindcss-oxide.js', import.meta.url)),
       },
       fallback: {
         module: false,
@@ -76,6 +76,12 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
             return source.replace(`require(userConfigPath)`, `null`)
           }),
         },
+        {
+          test: require.resolve('tailwindcss/lib/plugin.js'),
+          use: createLoader(function (source: string) {
+            return source.replace(/\w+\.env\.OXIDE/, 'false');
+          }),
+        },
       ]
     },
     plugins: [
@@ -83,6 +89,7 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
       new Webpack.DefinePlugin({
         'process.env.TAILWIND_MODE': JSON.stringify('build'),
         'process.env.TAILWIND_DISABLE_TOUCH': true,
+        'process.env.OXIDE': JSON.stringify(JSON.stringify(false)),
       })
     ],
     externals: [
