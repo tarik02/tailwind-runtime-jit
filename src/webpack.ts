@@ -3,6 +3,7 @@ import Webpack from 'webpack';
 type Options = {
   loader?: boolean;
   esModule?: boolean;
+  cache?: string;
 };
 
 export default class TailwindRuntimeJitWebpack {
@@ -18,6 +19,7 @@ export default class TailwindRuntimeJitWebpack {
         loader: TailwindRuntimeJitWebpack.loader,
         options: {
           esModule: this.options.esModule,
+          cache: this.options.cache,
         },
       });
     }

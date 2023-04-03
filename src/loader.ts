@@ -4,6 +4,7 @@ import { createRuntimeWebpackConfig } from './createRuntimeWebpackConfig.js';
 
 type Options = {
   esModule?: boolean;
+  cache?: string;
 };
 
 export async function pitch(this: Webpack.LoaderContext<Options>) {
@@ -15,10 +16,16 @@ export async function pitch(this: Webpack.LoaderContext<Options>) {
       esModule: {
         type: 'boolean',
       },
+      cache: {
+        type: 'string',
+      },
     },
   });
 
-  const config = await createRuntimeWebpackConfig(this.rootContext);
+  const config = await createRuntimeWebpackConfig(
+    this.rootContext,
+    options.cache
+  );
 
   const compiler = Webpack.webpack({
     ...config,
@@ -64,9 +71,12 @@ export async function pitch(this: Webpack.LoaderContext<Options>) {
     this.emitWarning(error);
   }
 
+  console.log(this)
+
   if (options.esModule) {
     return `
 import * as config from ${JSON.stringify('!' + this.resourcePath)};
+export * from ${JSON.stringify('!' + this.resourcePath)};
 ${fs.readFileSync('/index.js')}
 var runtime = TailwindRuntimeJit.createRuntime();
 runtime.setConfig(config.default ? config.default : config);
@@ -84,6 +94,6 @@ runtime.setConfig(config);
 module.hot.accept(${JSON.stringify('!' + this.resourcePath)}, function () {
   runtime.setConfig(require(${JSON.stringify('!' + this.resourcePath)}));
 });
-module.exports = {};
+module.exports = config;
 `;
 };

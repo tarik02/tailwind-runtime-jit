@@ -10,7 +10,10 @@ const externals: Record<string, string> = {
   tmp: 'self.tmp',
 };
 
-export const createRuntimeWebpackConfig = async (context: string): Promise<Webpack.Configuration> => {
+export const createRuntimeWebpackConfig = async (
+  context: string,
+  cache?: string
+): Promise<Webpack.Configuration> => {
   const require = createRequire(context + '/');
 
   const config: Webpack.Configuration = {
@@ -26,6 +29,9 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
         name: 'TailwindRuntimeJit',
       },
     },
+    cache: cache
+      ? { type: 'filesystem', cacheDirectory: cache }
+      : false,
     resolve: {
       alias: {
         fs: fileURLToPath(new URL('modules/fs.js', import.meta.url)),
