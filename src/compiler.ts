@@ -1,7 +1,9 @@
 import * as FS from 'fs';
 import * as Path from 'path';
-import { default as postcss } from 'postcss';
-import { Config, default as tailwindcss } from 'tailwindcss';
+import { Config } from 'tailwindcss';
+
+const { default: postcss } = require('postcss');
+const { default: tailwindcss } = require('tailwindcss');
 
 // @ts-ignore
 import preflightCss from 'tailwindcss/lib/css/preflight.css';

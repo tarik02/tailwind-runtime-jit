@@ -91,12 +91,6 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
         {
           test: require.resolve('tailwindcss/lib/util/validateConfig.js'),
           use: createLoader(function (source: string) {
-            console.log(
-              source.replace(
-                /require\(['"]@tailwindcss\/line-clamp['"]\)/,
-                `{}`,
-              )
-            )
             return source
               .replace(
                 /config\.content\.files\.length\s*===\s*0/,
