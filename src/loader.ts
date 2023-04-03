@@ -71,8 +71,6 @@ export async function pitch(this: Webpack.LoaderContext<Options>) {
     this.emitWarning(error);
   }
 
-  console.log(this)
-
   if (options.esModule) {
     return `
 import * as config from ${JSON.stringify('!' + this.resourcePath)};
