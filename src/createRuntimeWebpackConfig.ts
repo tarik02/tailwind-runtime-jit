@@ -77,9 +77,35 @@ export const createRuntimeWebpackConfig = async (context: string): Promise<Webpa
           }),
         },
         {
+          test: require.resolve('tailwindcss/lib/lib/load-config.js'),
+          use: createLoader(function (source: string) {
+            return `module.exports = require('tailwind-runtime-jit/internal/load-config');`;
+          }),
+        },
+        {
           test: require.resolve('tailwindcss/lib/plugin.js'),
           use: createLoader(function (source: string) {
             return source.replace(/\w+\.env\.OXIDE/, 'false');
+          }),
+        },
+        {
+          test: require.resolve('tailwindcss/lib/util/validateConfig.js'),
+          use: createLoader(function (source: string) {
+            console.log(
+              source.replace(
+                /require\(['"]@tailwindcss\/line-clamp['"]\)/,
+                `{}`,
+              )
+            )
+            return source
+              .replace(
+                /config\.content\.files\.length\s*===\s*0/,
+                'false'
+              )
+              .replace(
+                /require\(['"]@tailwindcss\/line-clamp['"]\)/,
+                `{}`,
+              );
           }),
         },
       ]
