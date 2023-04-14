@@ -22,7 +22,7 @@ import TailwindJitPlugin from 'tailwind-runtime-jit/webpack';
 
   entry: {
     app: [
-      ...process.env.NODE_ENV === 'development' ? [ './tailwind.config.js' ] : [], // +
+      ...process.env.NODE_ENV === 'development' ? [ TailwindJitPlugin.browserScript ] : [], // +
       'src/index.js',
     ],
   },
