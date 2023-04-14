@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node",
     "module": "ESNext",
     "target": "ESNext",
     "outDir": "dist",

@@ -1,37 +1,34 @@
-import { Config } from 'tailwindcss';
-
-import { createCompiler } from './compiler.js';
+import { createRemoteCompiler } from './remote-compiler.js';
 import { createClassesWatcher } from './watcher.js';
 
-
-export const createRuntime = () => {
-  const styleElement = document.createElement('style');
-  document.head.appendChild(styleElement);
-
-  document.addEventListener('DOMContentLoaded', () => {
+export const createRuntime = ({ apiUrl }: { apiUrl: string }) => {
+    const styleElement = document.createElement('style');
     document.head.appendChild(styleElement);
-  });
 
-  const applyStyles = (styles: string): void => {
-    styleElement.textContent = styles;
-    document.head.appendChild(styleElement);
-  };
+    document.addEventListener('DOMContentLoaded', () => {
+        document.head.appendChild(styleElement);
+    });
 
-  let compiler: ReturnType<typeof createCompiler> = createCompiler({});
-  let classNames: string[] = [];
+    const applyStyles = (styles: string): void => {
+        styleElement.textContent = styles;
+        document.head.appendChild(styleElement);
+    };
 
-  const setConfig = (config: Config) => {
-    compiler = createCompiler(config);
-    compiler(classNames).then(applyStyles);
-  };
+    const compiler: ReturnType<typeof createRemoteCompiler> = createRemoteCompiler({
+        apiUrl
+    });
+    let classNames: string[] = [];
 
-  const close = createClassesWatcher(newClassNames => {
-    classNames = newClassNames;
-    compiler(classNames).then(applyStyles);
-  });
+    const close = createClassesWatcher(newClassNames => {
+        classNames = newClassNames;
+        compiler(classNames).then(styles => {
+            if (classNames === newClassNames) {
+                applyStyles(styles);
+            }
+        });
+    });
 
-  return {
-    setConfig,
-    close,
-  };
+    return {
+        close
+    };
 };
